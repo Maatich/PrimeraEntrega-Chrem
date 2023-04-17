@@ -1,24 +1,29 @@
 import { Router } from 'express';
 import ProductManager from '../managers/ProductManager.js';
 import { joiValidator } from "../utils/validator.js";
-import CarritoManager from "../managers/CarritoManager.js"
+
+
 
 const router = Router()
 
+const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+const db = new ProductManager(dirname + '../db/products.json')
 
 const productManager = new ProductManager();
 
-router.post('/', async (req,res)=>{
-    let nuevoCarro = await CarritoManager.agregarCarrito();
-    res.send(nuevoCarro)
+router.get('/', async (req,res)=>{
+    const products = await productManager.getProducts();
+    res.send(products)
 })
+
+
 
 router.get('/:id', async (req,res)=>{
 
     const id = req.params.id;
-    const productId = await productManager.getProducts(id);
+    const productId = await productManager.getProduct(id);
     res.send(productId)
-
 
 })
 
