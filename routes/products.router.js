@@ -16,7 +16,7 @@ router.post('/', async (req,res)=>{
 router.get('/:id', async (req,res)=>{
 
     const id = req.params.id;
-    const productId = await productManager.getProduct(id);
+    const productId = await productManager.getProducts(id);
     res.send(productId)
 
 
