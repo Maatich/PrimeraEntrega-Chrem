@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const path = '../src/files/products.json';
+const path = './files/products.json';
 
 export default class ProductManager {
 
@@ -62,15 +62,16 @@ export default class ProductManager {
 
     }
     
-    modificarProducto = async(id, nombre,description,prince,categoria)=>{
+    modificarProducto = async(id, title,description,prince,categoria)=>{
 
-        const products = await this.getProducts();
+        const products = await this.getProducts(id);
 
         const productIndex = products.findIndex((product)=>{
             return product.id == id
         })
+        await this.eliminarProducto(id)
 
-        products[productIndex].nombre = nombre;
+        products[productIndex].title = title;
         products[productIndex].description = description;
         products[productIndex].prince = prince;
         products[productIndex].categoria = categoria;
@@ -83,6 +84,8 @@ export default class ProductManager {
         }
 
     }
+
+
 
 
 

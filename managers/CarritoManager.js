@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const path = '../src/files/carrito.json';
+const path = './files/carrito.json';
 
 export default class CarritoManager {
 
@@ -42,9 +42,9 @@ export default class CarritoManager {
         
     }
 
-    async addCart(carrito) {
+    async addCart() {
         try {
-            const carritos = await this.getCarrito()
+            const carritos = await this.getCarritos()
             let carrito = { products: [] }
 
             if (carritos.length === 0) {
@@ -54,7 +54,7 @@ export default class CarritoManager {
             }
 
             carritos.push(carrito)
-            await fs.promises.writeFile(this.path, JSON.stringify(carritos, null, '\t'))
+            await fs.promises.writeFile(path, JSON.stringify(carritos, null, '\t'))
             return ({ msg: 'Carrito se ha añadido: ', carrito })
         } catch (error) {
             console.log(`Error al guardar el carrito ${error}`)
@@ -63,11 +63,11 @@ export default class CarritoManager {
 
     async addProdInCart(idCart, idProd) {
         try {
-            const carritos = await this.getCarrito()
-            const findCart = carritos.find((c) => c.id === idCart)
+            const carritos = await this.getCarritos()
+            const findCart = carritos.find((c) => c.id == idCart)
 
             let prodInC = findCart.products
-            const pIndex = prodInC.findIndex((p) => p.id === idProd)
+            const pIndex = prodInC.findIndex((p) => p.id === idCart)
 
             if (pIndex !== -1) {
                 prodInC[pIndex].quantity = prodInC[pIndex].quantity + 1
@@ -76,7 +76,7 @@ export default class CarritoManager {
                 let prod = { id: idProd, quantity: 1 }
                 prodInC.push(prod)
             }
-            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'))
+            await fs.promises.writeFile(path, JSON.stringify(carritos, null, '\t'))
             return findCart
 
         } catch (error) {

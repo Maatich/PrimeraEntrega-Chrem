@@ -18,6 +18,10 @@ router.get('/:id', async (req,res)=>{
     res.send({carrito})
 
 })
+router.post('/', async (req, res) => {
+    let nuevoCarro = await carritoManager.addCart();
+    res.send({nuevoCarro});
+});
 
 router.delete('/:id', async (req,res)=>{
 
@@ -26,6 +30,17 @@ router.delete('/:id', async (req,res)=>{
     const msg = await carritoManager.eliminarCarritos(id);
     res.send(msg)
     
+})
+router.post('/:id/product/:pid', async (req,res) => {
+    try{
+        const idCart = req.params.id
+        const idProd = req.params.pid
+        const resultado = await carritoManager.addProdInCart(idCart, idProd)
+
+        res.send(resultado);
+    }catch (error){
+        res.status(400).send({error: "not found"})
+    }
 })
 
 export default router

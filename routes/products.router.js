@@ -1,14 +1,13 @@
 import { Router } from 'express';
 import ProductManager from '../managers/ProductManager.js';
-import { joiValidator } from "../utils/validator.js";
-
+import { joiValidator } from "../utils.js";
 
 
 const router = Router()
 
-const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const db = new ProductManager(dirname + '../db/products.json')
+
+
 
 const productManager = new ProductManager();
 
@@ -28,8 +27,8 @@ router.get('/:id', async (req,res)=>{
 })
 
 
-router.put('/', async (req,res)=>{
-    try {
+router.put('/:id', async (req,res)=>{
+    /*try {
         const { id } = req.params
         const { title, description, code, price, status, stock, category, thumbnails } = req.body
         const product = await joiValidator.product.validateAsync({
@@ -42,12 +41,18 @@ router.put('/', async (req,res)=>{
             category,
             thumbnails
         })
-        const productUpdate = await db.getProducts(id, product)
+        const productUpdate = await productManager.getProducts(id, product)
 
         res.status(200).send({ msg: 'Producto actualizado', productUpdate })
     } catch (error) {
         console.log(error)
-    }
+    }*/
+    
+
+    //Le hice unos cambios al put porque me traia ese error  [Error [ValidationError]: "title" is required], al metodo modificarProducto solo mofique lo que ves  .
+    const id = req.params.id;
+    const updateProduct = req.body
+    res.send(await productManager.modificarProducto(id, updateProduct));
 })
 
 router.post('/', async (req,res)=>{
@@ -63,7 +68,7 @@ router.post('/', async (req,res)=>{
         tittle, description, prince, thumbnail, code, stock, status:true, category
     }
 
-    const msg = await productManager.createProducto(producto);
+    const msg = await productManager.crearProducto(producto);
     res.send(msg);
 
 })
